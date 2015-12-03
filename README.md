@@ -8,4 +8,4 @@
 * Gene interactions for multiple organisms
 * NetWAS analysis, which can reprioritize results of an existing GWAS by incorporating tissue-specific functional interactions
 
-To learn more, please visit our [wiki](https://github.com/amr4/giant-api-doc/wiki) or see some [examples](https://github.com/amr4/giant-api-doc/wiki/Examples) of API use.
+To learn more, please visit our [wiki](https://github.com/FunctionLab/giant-api/wiki) or see some [examples](https://github.com/FunctionLab/giant-api/wiki/Examples) of API use.
