@@ -1,0 +1,152 @@
+Started demo.py at 2015-12-26 22:31:04.689949.
+
+This script uses the GIANT API to run a NetWAS job in demo mode, which is
+invoked by the setting "tissue=api-demo". This simulates a short SVM training,
+which completes in under 2 minutes. In order to run NetWAS on actual tissues,
+please replace "api-demo" with one of the 144 tissue choices supported by the
+API. Valid options are listed at http://giant-api.princeton.edu/tissues. Note
+that non-demo NetWAS tasks may take up to 30 minutes to complete.
+
+Step 1: Create new NetWAS job..
+	Done. Job details (prior to submission to GIANT server):
+>>>
+{
+    "id": null,
+    "created": null,
+    "title": "GIANT API NetWAS Example in Python",
+    "email": "",
+    "gwas_file": "./bmi-2012.out",
+    "tissue": "api-demo",
+    "p_value": 0.01,
+    "log_file": null,
+    "results_file": null,
+    "status": null
+} 
+<<<
+
+Step 2: Submit NetWAS job to GIANT server and start SVM training..
+	Done. Updated job status:
+>>>
+{
+    "id": "e933bee5-5f46-4660-934d-258f71b18d42",
+    "created": "2015-12-27T03:31:07.559840Z",
+    "title": "GIANT API NetWAS Example in Python",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/bmi-2012.out",
+    "tissue": "api-demo",
+    "p_value": 0.01,
+    "log_file": null,
+    "results_file": null,
+    "status": "queued"
+} 
+<<<
+
+Step 3: Wait 15 s for NetWAS job to start executing on GIANT server..
+	.....
+	Done. Updated job status:
+>>>
+{
+    "id": "e933bee5-5f46-4660-934d-258f71b18d42",
+    "created": "2015-12-27T03:31:07.559840Z",
+    "title": "GIANT API NetWAS Example in Python",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/bmi-2012.out",
+    "tissue": "api-demo",
+    "p_value": 0.01,
+    "log_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/log.txt",
+    "results_file": null,
+    "status": "running"
+} 
+<<<
+	Current training log:
+>>>
+Reading genes
+NEW Class array
+Cross Validation Trial 0
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3103 examples
+NEW Class array
+Cross Validation Trial 1
+SLACK NORM =1
+...
+<<<
+
+Step 4: Wait 30 s for NetWAS job to complete on GIANT server..
+	..........
+	Done. Final job status:
+>>>
+{
+    "id": "e933bee5-5f46-4660-934d-258f71b18d42",
+    "created": "2015-12-27T03:31:07.559840Z",
+    "title": "GIANT API NetWAS Example in Python",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/bmi-2012.out",
+    "tissue": "api-demo",
+    "p_value": 0.01,
+    "log_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/log.txt",
+    "results_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2015/12/27/fc3a0fb0-fb29-4a43-9b1d-b7374fd9a367/results.txt",
+    "status": "completed"
+} 
+<<<
+	Final training log:
+>>>
+Reading genes
+NEW Class array
+Cross Validation Trial 0
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3103 examples
+NEW Class array
+Cross Validation Trial 1
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3101 examples
+NEW Class array
+Cross Validation Trial 2
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3102 examples
+NEW Class array
+Cross Validation Trial 3
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3101 examples
+NEW Class array
+Cross Validation Trial 4
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3101 examples
+<<<
+	Job results (first 15 rows):
+>>>
+gene	class	z_score
+FOXI2	-1	0.507116
+DHCR24	-1	0.498371
+MRPL12	-1	0.471051
+NMI	-1	0.453594
+TWF1	-1	0.452324
+ZBTB24	-1	0.451116
+FGF2	-1	0.438866
+GOLM1	-1	0.38386
+COX5B	-1	0.381948
+LRRC27	-1	0.378153
+NPNT	-1	0.37708
+CNPY3	-1	0.376211
+RPL29	-1	0.374641
+RPL21	-1	0.374403
+...
+<<<
+
+Job status and results are also accessible from the web interface of the API.
+Please visit:
+
+	http://giant-api.princeton.edu/netwas/jobs/e933bee5-5f46-4660-934d-258f71b18d42
+
+Completed demo.py at 2015-12-26 22:31:55.827013.

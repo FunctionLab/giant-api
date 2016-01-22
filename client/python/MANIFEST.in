@@ -1,0 +1,3 @@
+include README.md
+include bmi-2012.out
+include expected-output.txt
