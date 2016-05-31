@@ -68,6 +68,6 @@ print "...\n<<<\n"
 
 # End demo
 print ("Job status and results are also accessible from the web interface of\n"
-       "the API. Please visit:\n")
+       "the API.Please visit:\n")
 print "\thttp://giant-api.princeton.edu/netwas/jobs/{0}".format(nj1.id)
 print "\nCompleted {0} at {1}.".format(sys.argv[0], datetime.datetime.now())
