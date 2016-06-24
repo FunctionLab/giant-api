@@ -1,0 +1,71 @@
+./run-networks-demo.sh started
+
+1. Validate brain tissue
+   command: curl giant-api.princeton.edu/tissues/check/brain
+   result:  ["brain"]
+
+2. Validate query genes
+   command: curl giant-api.princeton.edu/genes/check/snca+park7
+   result:  ["SNCA","PARK7"]
+
+3. Query functional network
+   command: curl giant-api.princeton.edu/networks -s -d tissue=brain -d genes=SNCA+PARK7 | python -m json.tool 2> /dev/null | head -15
+   result (first 15 lines):
+{
+    "edges": [
+        {
+            "source": "NDUFA1",
+            "target": "NDUFA4",
+            "weight": 0.8009668759023012
+        },
+        {
+            "source": "NDUFA1",
+            "target": "TBCA",
+            "weight": 0.3142691606402427
+        },
+        {
+            "source": "NDUFA1",
+            "target": "UQCRH",
+...
+
+4. Query with different prediction parameters
+   command: curl giant-api.princeton.edu/networks -s -d tissue=brain -d genes=SNCA+PARK7 -d num_genes=20 -d prior=0.15 | python -m json.tool 2> /dev/null | head -15
+   result (first 15 lines):
+{
+    "edges": [
+        {
+            "source": "NDUFA1",
+            "target": "NDUFA4",
+            "weight": 0.8647097991475734
+        },
+        {
+            "source": "NDUFA1",
+            "target": "UQCRH",
+            "weight": 0.8815474728524221
+        },
+        {
+            "source": "NDUFA1",
+            "target": "RPL11",
+...
+
+5. Query datasets supporting a specified gene interaction
+   command: curl giant-api.princeton.edu/networks/evidence -s -d tissue=brain -d source=ATP5J -d target=PARK7 | python -m json.tool 2> /dev/null | head -15
+   result (first 15 lines):
+{
+    "datasets": [
+        {
+            "dataset": "GSEA C2 CGP",
+            "description": "Chemical and genetic perturbations",
+            "posterior": 0.014093097973714594,
+            "slug": "gsea-c2-cgp",
+            "title": "Chemical and genetic perturbations",
+            "urltype": "",
+            "version": "3.0"
+        },
+        {
+            "dataset": "GDS1295",
+            "description": "Lethal congenital contracture syndrome",
+            "posterior": 0.00702015645132803,
+...
+
+./run-networks-demo.sh completed
