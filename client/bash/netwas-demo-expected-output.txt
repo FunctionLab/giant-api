@@ -1,0 +1,151 @@
+./run-netwas-demo.sh started
+
+1. Create new NetWAS job
+
+   command: curl -s http://giant-api.princeton.edu/netwas/jobs 
+                 -F gwas_file=@bmi-2012.txt 
+                 -F gwas_format=vegas 
+                 -F tissue=api-demo 
+                 -F p_value=0.01 
+                 -F title="NetWAS from shell script" | python -m json.tool
+
+   result: {
+    "created": "2016-06-24T13:05:30.193660Z",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/bmi-2012.txt",
+    "gwas_format": "vegas",
+    "id": "95e4c320-7a07-492f-838d-571c08756391",
+    "log_file": null,
+    "p_value": "0.0100",
+    "results_file": null,
+    "status": "not_started",
+    "tissue": "api-demo",
+    "title": "NetWAS from shell script"
+}
+
+2. Submit NetWAS job to GIANT server and start SVM training
+
+   command: curl -s -X POST http://giant-api.princeton.edu/netwas/jobs/95e4c320-7a07-492f-838d-571c08756391/start | python -m json.tool
+
+   result: {
+    "created": "2016-06-24T13:05:30Z",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/bmi-2012.txt",
+    "gwas_format": "vegas",
+    "id": "95e4c320-7a07-492f-838d-571c08756391",
+    "log_file": null,
+    "p_value": "0.0100",
+    "results_file": null,
+    "status": "queued",
+    "tissue": "api-demo",
+    "title": "NetWAS from shell script"
+}
+
+3. Wait 15 s for NetWAS job to start executing on GIANT server
+   ...............
+   Print current job status (expected status: 'running')
+
+   command: curl -s http://giant-api.princeton.edu/netwas/jobs/95e4c320-7a07-492f-838d-571c08756391 | python -m json.tool
+
+   result: {
+    "created": "2016-06-24T13:05:30Z",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/bmi-2012.txt",
+    "gwas_format": "vegas",
+    "id": "95e4c320-7a07-492f-838d-571c08756391",
+    "log_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/log.txt",
+    "p_value": "0.0100",
+    "results_file": null,
+    "status": "running",
+    "tissue": "api-demo",
+    "title": "NetWAS from shell script"
+}
+
+4. Print training log (first 10 lines)
+
+   command: curl -s http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/log.txt | head
+
+   log:
+>>>
+Reading genes
+NEW Class array
+Cross Validation Trial 0
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3103 examples
+NEW Class array
+Cross Validation Trial 1
+SLACK NORM =1
+...
+<<<
+
+5. Wait 30 s for NetWAS job to complete on GIANT server
+   ..............................
+   Print current job status (expected status: 'completed')
+
+   command: curl -s http://giant-api.princeton.edu/netwas/jobs/95e4c320-7a07-492f-838d-571c08756391 | python -m json.tool
+
+   result: {
+    "created": "2016-06-24T13:05:30Z",
+    "email": "",
+    "gwas_file": "http://giant-api.princeton.edu/media/uploads/netwas/1.0/gwas-files/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/bmi-2012.txt",
+    "gwas_format": "vegas",
+    "id": "95e4c320-7a07-492f-838d-571c08756391",
+    "log_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/log.txt",
+    "p_value": "0.0100",
+    "results_file": "http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/results.txt",
+    "status": "completed",
+    "tissue": "api-demo",
+    "title": "NetWAS from shell script"
+}
+
+6. Print training log (last 10 lines)
+
+   command: curl -s http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/log.txt | tail
+
+   log:
+>>>
+...
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3101 examples
+NEW Class array
+Cross Validation Trial 4
+SLACK NORM =1
+ALG=3
+Learned
+Classified 3101 examples
+<<<
+
+7. Print NetWAS output (first and last 10 lines)
+
+   command: curl -s http://giant-api.princeton.edu/media/results/netwas/1.0/2016/06/24/dd9d71a6-e74f-44c6-be3f-fe3fc0c1db6a/results.txt
+
+   netwas_output:
+>>>
+####################################################################
+# Demo results file for GIANT::NetWAS REST API (tissue='api-demo') #
+####################################################################
+
+FOXI2	-1	0.507116
+DHCR24	-1	0.498371
+MRPL12	-1	0.471051
+NMI	-1	0.453594
+TWF1	-1	0.452324
+ZBTB24	-1	0.451116
+...
+TRIB2	-1	-1.75713
+LIMCH1	-1	-1.77256
+MCM3	-1	-1.77524
+NBN	-1	-1.86501
+COL4A2	-1	-1.90504
+FXR1	-1	-1.98974
+
+####################################################################
+# Demo results file for GIANT::NetWAS REST API (tissue='api-demo') #
+####################################################################
+<<<
+
+./run-netwas-demo.sh completed
